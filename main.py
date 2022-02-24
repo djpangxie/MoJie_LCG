@@ -2029,6 +2029,7 @@ class Program_Entrance:
                         self.select_card = None
                     elif event.key == pygame.K_RETURN and self.response_conflict is None:
                         self.return_phase = self.threat_area.current_phase
+                        self.next_step = 1
                         self.button_option.reset()
                         self.select_card = None
                     if event.mod & pygame.KMOD_CAPS:

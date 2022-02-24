@@ -91,7 +91,7 @@ class Enemy(Enemy_Group):
                     enemy.update_mask()
                 self.pause_card = "order"
                 self.pause_card_order = self.main_game.threat_area.order
-                self.main_game.threat_area.order = [True, 50, 0, True, 0, 0]
+                self.main_game.threat_area.order = [True, 52, 0, True, 0, 0]
                 self.main_game.threat_area.current_phase = 5
                 self.copy_information = self.main_game.information
                 self.main_game.information = None
@@ -103,7 +103,7 @@ class Enemy(Enemy_Group):
                 else:
                     self.main_game.encounterdiscard_area.encounterdiscard_deck = [self]
                 self.bonus_attack = None
-        elif self.bonus_attack is True and self.main_game.threat_area.order[1] == 52 and not self.main_game.information:
+        elif self.bonus_attack is True and self.main_game.threat_area.order[1] == 55 and not self.main_game.information:
             enemys = []
             for enemy in self.main_game.scenario_area.card_group:
                 if "已攻击" in enemy.active_condition:

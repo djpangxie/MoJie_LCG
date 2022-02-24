@@ -7,8 +7,8 @@ class Settings:
     def __init__(self):
         """初始化游戏设置"""
         self.original_card_size = (429, 600)  # 原始卡牌的图像大小，用于建立卡牌尺寸比例的标准
-        self.screen_width = 800  # 屏幕宽度设置
-        self.screen_height = 600  # 屏幕高度设置
+        self.screen_width = 2500  # 屏幕宽度设置
+        self.screen_height = 1600  # 屏幕高度设置
         self.screen_size = (self.screen_width, self.screen_height)
         self.screen_background = (255, 255, 255)  # 屏幕背景
         self.font_file = os.path.join(os.path.split(os.path.abspath(__file__))[0], "simsun.ttf")  # 游戏中默认使用的中文字体

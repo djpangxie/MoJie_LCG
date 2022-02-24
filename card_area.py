@@ -397,10 +397,18 @@ class Threat_Area:
                 self.order[1] += 1
                 self.order[2] -= 1
             elif not self.main_game.information:
+                self.main_game.select_card = None
+                self.main_game.information = [0, "将要进入行动窗口", "order"]
+                self.order[1] += 1
+        elif self.order[0] and self.order[1] == 9:
+            if self.order[2]:
+                self.order[1] += 1
+                self.order[2] -= 1
+            elif not self.main_game.information:
                 self.current_phase = -1
                 self.main_game.information = [0, "将要进入计划阶段", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 9:
+        elif self.order[0] and self.order[1] == 10:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -408,7 +416,7 @@ class Threat_Area:
                 self.current_phase = 1
                 self.main_game.information = [0, "进入计划阶段后", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 10:
+        elif self.order[0] and self.order[1] == 11:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -417,7 +425,7 @@ class Threat_Area:
                     self.main_game.next_step = 0
                     self.main_game.information = [0, "将要离开计划阶段", "order"]
                     self.order[1] += 1
-        elif self.order[0] and self.order[1] == 11:
+        elif self.order[0] and self.order[1] == 12:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -425,7 +433,7 @@ class Threat_Area:
                 self.current_phase = -1
                 self.main_game.information = [0, "将要进入任务阶段", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 12:
+        elif self.order[0] and self.order[1] == 13:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -433,14 +441,14 @@ class Threat_Area:
                 self.current_phase = 2
                 self.main_game.information = [0, "进入任务阶段后", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 13:
+        elif self.order[0] and self.order[1] == 14:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
             elif not self.main_game.information:
                 self.main_game.information = [0, "将要进入指派角色步骤", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 14:
+        elif self.order[0] and self.order[1] == 15:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -448,7 +456,7 @@ class Threat_Area:
                 self.current_step = 0
                 self.main_game.information = [0, "进入指派角色步骤后", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 15:
+        elif self.order[0] and self.order[1] == 16:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -456,7 +464,7 @@ class Threat_Area:
                 self.main_game.select_card = None
                 self.main_game.information = [0, "将要进入行动窗口", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 16:
+        elif self.order[0] and self.order[1] == 17:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -465,7 +473,7 @@ class Threat_Area:
                     self.main_game.next_step = 0
                     self.main_game.information = [0, "将要离开指派角色步骤", "order"]
                     self.order[1] += 1
-        elif self.order[0] and self.order[1] == 17:
+        elif self.order[0] and self.order[1] == 18:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -473,7 +481,7 @@ class Threat_Area:
                 self.main_game.select_card = None
                 self.main_game.information = [0, "将要进入行动窗口", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 18:
+        elif self.order[0] and self.order[1] == 19:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -481,21 +489,13 @@ class Threat_Area:
                 self.current_step = -1
                 self.main_game.information = [0, "将要进入集结步骤", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 19:
+        elif self.order[0] and self.order[1] == 20:
             if self.order[2]:
                 self.order[1] += 8
                 self.order[2] -= 1
             elif not self.main_game.information:
                 self.current_step = 1
                 self.main_game.information = [0, "进入集结步骤后", "order"]
-                self.order[1] += 1
-        elif self.order[0] and self.order[1] == 20:
-            if self.order[2]:
-                self.order[1] += 1
-                self.order[2] -= 1
-            elif not self.main_game.information:
-                self.main_game.select_card = None
-                self.main_game.information = [0, "将要进入行动窗口", "order"]
                 self.order[1] += 1
         elif self.order[0] and self.order[1] == 21:
             if self.order[2]:
@@ -599,14 +599,6 @@ class Threat_Area:
                 self.order[1] += 1
                 self.order[2] -= 1
             elif not self.main_game.information:
-                self.main_game.select_card = None
-                self.main_game.information = [0, "将要进入行动窗口", "order"]
-                self.order[1] += 1
-        elif self.order[0] and self.order[1] == 30:
-            if self.order[2]:
-                self.order[1] += 1
-                self.order[2] -= 1
-            elif not self.main_game.information:
                 willpower = 0
                 threat = 0
                 for card in self.main_game.role_area.card_group:
@@ -617,7 +609,7 @@ class Threat_Area:
                         threat += card.active_threat_force
                 self.main_game.information = [0, "将要结算任务", "order", willpower - threat]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 31:
+        elif self.order[0] and self.order[1] == 30:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -652,7 +644,7 @@ class Threat_Area:
                     self.threat_value += threat - willpower
                 self.main_game.information = [0, "将要离开任务结算步骤", "order", willpower - threat]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 32:
+        elif self.order[0] and self.order[1] == 31:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -660,7 +652,7 @@ class Threat_Area:
                 self.main_game.select_card = None
                 self.main_game.information = [0, "将要进入行动窗口", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 33:
+        elif self.order[0] and self.order[1] == 32:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -668,7 +660,7 @@ class Threat_Area:
                 self.current_step = -1
                 self.main_game.information = [0, "将要离开任务阶段", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 34:
+        elif self.order[0] and self.order[1] == 33:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -680,7 +672,7 @@ class Threat_Area:
                 self.current_phase = -1
                 self.main_game.information = [0, "将要进入探索阶段", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 35:
+        elif self.order[0] and self.order[1] == 34:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -688,7 +680,7 @@ class Threat_Area:
                 self.current_phase = 3
                 self.main_game.information = [0, "进入探索阶段后", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 36:
+        elif self.order[0] and self.order[1] == 35:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -701,12 +693,20 @@ class Threat_Area:
                 if self.main_game.next_step or not can_activate:
                     self.main_game.next_step = 0
                     self.order[1] += 1
-        elif self.order[0] and self.order[1] == 37:
+        elif self.order[0] and self.order[1] == 36:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
             elif not self.main_game.information:
                 self.main_game.information = [0, "将要离开探索阶段", "order"]
+                self.order[1] += 1
+        elif self.order[0] and self.order[1] == 37:
+            if self.order[2]:
+                self.order[1] += 1
+                self.order[2] -= 1
+            elif not self.main_game.information:
+                self.main_game.select_card = None
+                self.main_game.information = [0, "将要进入行动窗口", "order"]
                 self.order[1] += 1
         elif self.order[0] and self.order[1] == 38:
             if self.order[2]:
@@ -764,17 +764,25 @@ class Threat_Area:
                 self.order[1] += 1
                 self.order[2] -= 1
             elif not self.main_game.information:
+                self.main_game.select_card = None
+                self.main_game.information = [0, "将要进入行动窗口", "order"]
+                self.order[1] += 1
+        elif self.order[0] and self.order[1] == 45:
+            if self.order[2]:
+                self.order[1] += 1
+                self.order[2] -= 1
+            elif not self.main_game.information:
                 self.current_step = -1
                 self.main_game.information = [0, "将要进入交锋检定步骤", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 45:
+        elif self.order[0] and self.order[1] == 46:
             if self.order[2]:
                 self.order[1] += 1
             elif not self.main_game.information:
                 self.current_step = 1
                 self.main_game.information = [0, "进入交锋检定步骤后", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 46:
+        elif self.order[0] and self.order[1] == 47:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -784,7 +792,15 @@ class Threat_Area:
                         card.card_order = ["交锋", 0, 0, False, 0, 0]
                 self.main_game.information = [0, "将要离开交锋检定步骤", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 47:
+        elif self.order[0] and self.order[1] == 48:
+            if self.order[2]:
+                self.order[1] += 1
+                self.order[2] -= 1
+            elif not self.main_game.information:
+                self.main_game.select_card = None
+                self.main_game.information = [0, "将要进入行动窗口", "order"]
+                self.order[1] += 1
+        elif self.order[0] and self.order[1] == 49:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -792,7 +808,7 @@ class Threat_Area:
                 self.current_step = -1
                 self.main_game.information = [0, "将要离开遭遇阶段", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 48:
+        elif self.order[0] and self.order[1] == 50:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -800,7 +816,7 @@ class Threat_Area:
                 self.current_phase = -1
                 self.main_game.information = [0, "将要进入战斗阶段", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 49:
+        elif self.order[0] and self.order[1] == 51:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -811,7 +827,7 @@ class Threat_Area:
                 self.order[4] = 0
                 self.order[5] = 0
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 50:
+        elif self.order[0] and self.order[1] == 52:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -862,7 +878,15 @@ class Threat_Area:
                         self.order[4] = 0
                         self.order[5] = 0
                         self.order[1] += 1
-        elif self.order[0] and self.order[1] == 51:
+        elif self.order[0] and self.order[1] == 53:
+            if self.order[2]:
+                self.order[1] += 1
+                self.order[2] -= 1
+            elif not self.main_game.information:
+                self.main_game.select_card = None
+                self.main_game.information = [0, "将要进入行动窗口", "order"]
+                self.order[1] += 1
+        elif self.order[0] and self.order[1] == 54:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -1043,7 +1067,7 @@ class Threat_Area:
                     self.main_game.select_card = None
                     self.main_game.information = [0, "将要进入行动窗口", "order"]
                     self.order[4] += 1
-        elif self.order[0] and self.order[1] == 52:
+        elif self.order[0] and self.order[1] == 55:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -1187,7 +1211,7 @@ class Threat_Area:
                     self.main_game.select_card = None
                     self.main_game.information = [0, "将要进入行动窗口", "order"]
                     self.order[4] += 1
-        elif self.order[0] and self.order[1] == 53:
+        elif self.order[0] and self.order[1] == 56:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -1195,7 +1219,7 @@ class Threat_Area:
                 self.current_step = -1
                 self.main_game.information = [0, "将要离开战斗阶段", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 54:
+        elif self.order[0] and self.order[1] == 57:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -1221,7 +1245,7 @@ class Threat_Area:
                 self.current_phase = -1
                 self.main_game.information = [0, "将要进入恢复阶段", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 55:
+        elif self.order[0] and self.order[1] == 58:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -1268,7 +1292,7 @@ class Threat_Area:
                 self.order[4] = 0
                 self.order[5] = 0
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 56:
+        elif self.order[0] and self.order[1] == 59:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -1298,7 +1322,7 @@ class Threat_Area:
                     self.order[4] = 0
                     self.order[5] = 0
                     self.order[1] += 1
-        elif self.order[0] and self.order[1] == 57:
+        elif self.order[0] and self.order[1] == 60:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -1307,7 +1331,7 @@ class Threat_Area:
                     del self.reset_cards
                 self.main_game.information = [0, "玩家将要上升威胁等级", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 58:
+        elif self.order[0] and self.order[1] == 61:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -1315,7 +1339,7 @@ class Threat_Area:
                 self.threat_value += 1
                 self.main_game.information = [0, "玩家上升威胁等级后", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 59:
+        elif self.order[0] and self.order[1] == 62:
             if self.order[2]:
                 self.order[1] += 1
                 self.order[2] -= 1
@@ -1334,7 +1358,15 @@ class Threat_Area:
                     card.update_mask()
                 self.main_game.information = [0, "将要离开恢复阶段", "order"]
                 self.order[1] += 1
-        elif self.order[0] and self.order[1] == 60:
+        elif self.order[0] and self.order[1] == 63:
+            if self.order[2]:
+                self.order[1] += 1
+                self.order[2] -= 1
+            elif not self.main_game.information:
+                self.main_game.select_card = None
+                self.main_game.information = [0, "将要进入行动窗口", "order"]
+                self.order[1] += 1
+        elif self.order[0] and self.order[1] == 64:
             if self.order[2]:
                 self.order[1] = 3
                 self.order[2] -= 1
