@@ -8,7 +8,7 @@ class Task(Task_Group):
         self.card_file = "6.jpg"  # 任务卡牌的图像文件名
         self.card_image = pygame.image.load(os.path.join(self.card_dir, self.card_file)).convert()  # 任务卡牌的原始图像
         self.card_number = 6  # 任务序号，本数字决定游戏开始时，任务牌组中卡牌的放置顺序。
-        self.card_name = "”不要离开小径！“"  # 本卡牌的名称。剧情中每个连续的场景都具有各自的独有名称
+        self.card_name = "“不要离开小径！”"  # 本卡牌的名称。剧情中每个连续的场景都具有各自的独有名称
         self.plot_name = "穿越幽暗密林"  # 这个任务所属的剧情的名称
         self.plot_finish = True  # 剧情结束标志符，True表示这张卡完成后会通关此剧情。
         self.encounter_symbol = ("树", "蜘蛛", "半兽人")  # 遭遇信息，表明在该剧情中哪些遭遇牌应洗入遭遇牌组
