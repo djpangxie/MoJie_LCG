@@ -39,7 +39,7 @@ class Enemy(Enemy_Group):
             for card in self.main_game.scenario_area.card_group:
                 if card.card_type == "敌军" and card != self:
                     self.main_game.button_option.buttons.remove(("交锋", None))
-                    self.main_game.button_option._set_current_button()
+                    self.main_game.button_option.set_current_button()
                     break
 
     # 卡牌侦听

@@ -41,7 +41,8 @@ class Player(Player_Group):
     # 卡牌侦听
     def card_listening(self):
         super().card_listening()
-        if self.active_health_point > 0 and self.main_game.information and "卡牌放置进场后" in self.main_game.information[1] and self.main_game.information[3] == self and "响应后" not in self.active_condition:
+        if self.active_health_point > 0 and self.main_game.information and "卡牌放置进场后" in self.main_game.information[
+            1] and self.main_game.information[3] == self and "响应后" not in self.active_condition:
             self.main_game.response_conflict = True
             self.card_order = ["响应", 0, 0, False, 0, 0]
             self.active_condition["响应后"] = None
@@ -79,6 +80,10 @@ class Player(Player_Group):
                             for affiliated in card.active_condition["被附属"]:
                                 if self.condition_affiliated(affiliated) and "免疫" not in affiliated.rule_mark:
                                     affiliateds.append(affiliated)
+                    if self.main_game.playerdeck_area.player_affiliated:
+                        for affiliated in self.main_game.playerdeck_area.player_affiliated:
+                            if self.condition_affiliated(affiliated) and "免疫" not in affiliated.rule_mark:
+                                affiliateds.append(affiliated)
                     if affiliateds:
                         affiliated = self.main_game.card_select(affiliateds)
                         affiliated.card_order = ["弃除附属", 0, 0, False, 0, 0]

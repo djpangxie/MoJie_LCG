@@ -50,11 +50,28 @@ class Task(Task_Group):
                 self.card_order[2] -= 1
             elif not self.main_game.information:
                 self.main_game.information = [0, "任务卡牌将要执行布置效果", self]
+                self.card_order[1] += 1
+        elif self.card_order[0] == "布置" and self.card_order[1] == 1:
+            if self.card_order[2]:
+                self.card_order[1] += 1
+            elif not self.main_game.information:
+                card = None
+                if self.main_game.encounter_area.encounter_deck:
+                    for card in self.main_game.encounter_area.encounter_deck:
+                        if card.card_name == "多尔哥多戒灵":
+                            break
+                if card is not None and card.card_name == "多尔哥多戒灵":
+                    self.main_game.encounter_area.encounter_deck.remove(card)
+                    if self.main_game.encounter_area.encounter_affiliated:
+                        self.main_game.encounter_area.encounter_affiliated.append(card)
+                    else:
+                        self.main_game.encounter_area.encounter_affiliated = [card]
+                random.shuffle(self.main_game.encounter_area.encounter_deck)
                 self.card_order[3] = True
                 self.card_order[4] = 0
                 self.card_order[5] = 0
                 self.card_order[1] += 1
-        elif self.card_order[0] == "布置" and self.card_order[1] == 1:
+        elif self.card_order[0] == "布置" and self.card_order[1] == 2:
             if self.card_order[2]:
                 self.card_order[1] += 1
                 self.card_order[3] = False
@@ -112,109 +129,21 @@ class Task(Task_Group):
                         self.target_group.append(self.encounter_card)
                         del self.encounter_card
                     self.card_order[4] += 1
-        elif self.card_order[0] == "布置" and self.card_order[1] == 2:
-            if self.card_order[2]:
-                self.card_order[1] += 1
-            elif not self.main_game.information:
-                card = None
-                if self.main_game.encounter_area.encounter_deck:
-                    for card in self.main_game.encounter_area.encounter_deck:
-                        if card.card_name == "多尔哥多戒灵":
-                            break
-                if card is not None and card.card_name == "多尔哥多戒灵":
-                    self.main_game.encounter_area.encounter_deck.remove(card)
-                    if self.main_game.encounter_area.encounter_affiliated:
-                        self.main_game.encounter_area.encounter_affiliated.append(card)
-                    else:
-                        self.main_game.encounter_area.encounter_affiliated = [card]
-                random.shuffle(self.main_game.encounter_area.encounter_deck)
-                self.card_order[3] = True
-                self.card_order[4] = 0
-                self.card_order[5] = 0
-                self.card_order[1] += 1
         elif self.card_order[0] == "布置" and self.card_order[1] == 3:
-            if self.card_order[2]:
-                self.card_order[1] += 1
-                self.card_order[2] -= 1
-                self.card_order[3] = False
-            elif not self.main_game.information and self.card_order[3]:
-                if self.card_order[5]:
-                    if self.card_order[4] % 4 == 1 and self.main_game.encounter_area.encounter_deck:
-                        self.main_game.encounter_area.encounter_deck[0].reset_card()
-                        self.main_game.encounter_area.encounter_deck[0].update_mask()
-                    elif self.card_order[4] % 4 == 3 and hasattr(self, "encounter_card"):
-                        self.main_game.scenario_area.card_group.pop(self.encounter_card)
-                        self.encounter_card.reset_card()
-                        self.encounter_card.update_mask()
-                        if self.main_game.encounter_area.encounter_deck:
-                            self.main_game.encounter_area.encounter_deck.insert(0, self.encounter_card)
-                            random.shuffle(self.main_game.encounter_area.encounter_deck)
-                        else:
-                            self.main_game.encounter_area.encounter_deck = [self.encounter_card]
-                        del self.encounter_card
-                    self.card_order[4] += 1
-                    self.card_order[5] -= 1
-                elif self.card_order[4] % 4 == 0:
-                    if hasattr(self, "encounter_card"):
-                        del self.encounter_card
-                    if self.card_order[4] // 4 < len(
-                            self.target_group) and self.main_game.encounter_area.encounter_deck:
-                        self.main_game.information = [0, "遭遇卡牌将要展示", self,
-                                                      self.main_game.encounter_area.encounter_deck[0]]
-                        self.card_order[4] += 1
-                    else:
-                        self.card_order[3] = False
-                        self.card_order[4] = 0
-                        self.card_order[5] = 0
-                        self.card_order[1] += 1
-                elif self.card_order[4] % 4 == 1:
-                    if self.main_game.encounter_area.encounter_deck:
-                        self.encounter_card = self.main_game.encounter_area.encounter_deck.pop(0)
-                        self.main_game.card_exhibition(self.encounter_card,
-                                                       self.main_game.settings.card_exhibition_time)
-                        self.main_game.scenario_area.card_group[self.encounter_card] = None
-                        self.main_game.information = [0, "遭遇卡牌展示后", self, self.encounter_card]
-                    self.card_order[4] += 1
-                elif self.card_order[4] % 4 == 2:
-                    if hasattr(self, "encounter_card") and self.encounter_card.card_type != "阴谋":
-                        self.main_game.information = [0, self.encounter_card.card_type + "卡牌将要放置进场", self,
-                                                      self.encounter_card]
-                    self.card_order[4] += 1
-                elif self.card_order[4] % 4 == 3:
-                    if hasattr(self, "encounter_card") and self.encounter_card.card_type != "阴谋":
-                        target_card = self.target_group[self.card_order[4] // 4]
-                        self.main_game.card_estimate(target_card).pop(target_card)
-                        self.main_game.scenario_area.card_group[self.encounter_card] = [target_card]
-                        if "被附属" not in self.encounter_card.active_condition or not \
-                                self.encounter_card.active_condition["被附属"]:
-                            self.encounter_card.active_condition["被附属"] = [target_card]
-                            self.encounter_card.update_mask()
-                        else:
-                            self.encounter_card.active_condition["被附属"].append(target_card)
-                        target_card.active_condition["附属到"] = [self.encounter_card]
-                        if "类型+" in target_card.active_condition:
-                            target_card.active_condition["类型+"].append("附属")
-                        else:
-                            target_card.active_condition["类型+"] = ["附属"]
-                        target_card.update_mask()
-                        self.main_game.information = [0, self.encounter_card.card_type + "卡牌放置进场后", self,
-                                                      self.encounter_card]
-                    self.card_order[4] += 1
-        elif self.card_order[0] == "布置" and self.card_order[1] == 4:
             if self.card_order[2]:
                 self.card_order[1] += 1
                 self.card_order[2] -= 1
             elif not self.main_game.information:
                 self.main_game.information = [0, "任务卡牌布置效果结算后", self]
                 self.card_order[1] += 1
-        elif self.card_order[0] == "布置" and self.card_order[1] == 5:
+        elif self.card_order[0] == "布置" and self.card_order[1] == 4:
             if self.card_order[2]:
                 self.card_order[2] = 0
             elif not self.main_game.information:
                 self.main_game.information = [0, "任务卡牌将要展示", self, self.main_game.task_area.task_deck[
                     self.main_game.task_area.task_number + 1]]
                 self.card_order[1] += 1
-        elif self.card_order[0] == "布置" and self.card_order[1] == 6:
+        elif self.card_order[0] == "布置" and self.card_order[1] == 5:
             if self.card_order[2]:
                 self.card_order[2] = 0
             elif not self.main_game.information:

@@ -1,6 +1,3 @@
-import os.path
-
-
 class Settings:
     """存储游戏中所有设置的类"""
 
@@ -8,10 +5,10 @@ class Settings:
         """初始化游戏设置"""
         self.original_card_size = (429, 600)  # 原始卡牌的图像大小，用于建立卡牌尺寸比例的标准
         self.screen_width = 2500  # 屏幕宽度设置
-        self.screen_height = 1600  # 屏幕高度设置
+        self.screen_height = 1700  # 屏幕高度设置
         self.screen_size = (self.screen_width, self.screen_height)
         self.screen_background = (255, 255, 255)  # 屏幕背景
-        self.font_file = os.path.join(os.path.split(os.path.abspath(__file__))[0], "simsun.ttf")  # 游戏中默认使用的中文字体
+        self.font_file = "simsun.ttf"  # 游戏中默认使用的中文字体（当前目录下）
         self.font_color = (0, 0, 0)  # 默认使用的按钮字体颜色
         self.font_color_background = (200, 200, 200)  # 默认使用的按钮字体背景颜色
         self.area_height_spacing = 50  # 上下两个区域之间的默认间距(屏幕高的多少分之一)

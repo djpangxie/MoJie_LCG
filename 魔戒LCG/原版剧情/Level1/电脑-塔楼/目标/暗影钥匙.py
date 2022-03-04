@@ -30,7 +30,7 @@ class Enemy(Enemy_Group):
                 self) is not None and "附属到" not in self.active_condition and "已横置" not in self.active_condition and "行动后" not in self.active_condition and "暗影牌" not in self.active_condition and \
                 self.main_game.button_option.buttons[0][0] != "获取":
             self.main_game.button_option.buttons.insert(0, ("获取", None))
-            self.main_game.button_option._set_current_button()
+            self.main_game.button_option.set_current_button()
 
     # 卡牌被选中时，侦听按钮树的选项选择
     def listening_button(self):
@@ -42,9 +42,109 @@ class Enemy(Enemy_Group):
                     self.main_game.select_card = None
         super().listening_button()
 
+    # 卡牌侦听
+    def card_listening(self):
+        super().card_listening()
+        if self.main_game.information and self.main_game.information[1][-7:] == "卡牌放置进场后" and \
+                self.main_game.information[3] == self and "守护" in self.rule_keyword and str(
+            self) not in self.main_game.information:
+            if self.main_game.information[2] != "order":
+                self.pause_card = self.main_game.information[2]
+                self.pause_card_order = self.main_game.information[2].card_order
+                self.main_game.information[2].card_order = [None, -1, 0, None, -1, 0]
+            self.copy_information = self.main_game.information
+            self.main_game.information = None
+            self.card_order = ["进场后", 0, 0, False, 0, 0]
+
     # 执行这张卡片的效果
     def run_card_order(self):
-        if self.card_order[0] == "获取" and self.card_order[1] == 0:
+        if self.card_order[0] == "进场后" and self.card_order[1] == 0:
+            if self.card_order[2]:
+                self.card_order[1] += 1
+            elif not self.main_game.information:
+                if "守护" in self.rule_keyword and self.main_game.encounter_area.encounter_deck:
+                    self.main_game.information = [0, "遭遇卡牌将要展示", self, self.main_game.encounter_area.encounter_deck[0]]
+                self.card_order[1] += 1
+        elif self.card_order[0] == "进场后" and self.card_order[1] == 1:
+            if self.card_order[2]:
+                if self.main_game.encounter_area.encounter_deck:
+                    self.main_game.encounter_area.encounter_deck[0].reset_card()
+                    self.main_game.encounter_area.encounter_deck[0].update_mask()
+                self.card_order[1] += 1
+                self.card_order[2] -= 1
+            elif not self.main_game.information:
+                if "守护" in self.rule_keyword and self.main_game.encounter_area.encounter_deck:
+                    self.encounter_card = self.main_game.encounter_area.encounter_deck.pop(0)
+                    self.main_game.card_exhibition(self.encounter_card, self.main_game.settings.card_exhibition_time)
+                    self.main_game.scenario_area.card_group[self.encounter_card] = None
+                    self.main_game.information = [0, "遭遇卡牌展示后", self, self.encounter_card]
+                self.card_order[1] += 1
+        elif self.card_order[0] == "进场后" and self.card_order[1] == 2:
+            if self.card_order[2]:
+                self.card_order[1] += 1
+                self.card_order[2] -= 1
+            elif not self.main_game.information:
+                if "守护" in self.rule_keyword and hasattr(self,
+                                                         "encounter_card") and self.encounter_card.card_type != "阴谋":
+                    self.main_game.information = [0, self.encounter_card.card_type + "卡牌将要放置进场", self,
+                                                  self.encounter_card]
+                self.card_order[1] += 1
+        elif self.card_order[0] == "进场后" and self.card_order[1] == 3:
+            if self.card_order[2]:
+                if hasattr(self, "encounter_card"):
+                    self.main_game.scenario_area.card_group.pop(self.encounter_card)
+                    self.encounter_card.reset_card()
+                    self.encounter_card.update_mask()
+                    if self.main_game.encounter_area.encounter_deck:
+                        self.main_game.encounter_area.encounter_deck.insert(0, self.encounter_card)
+                        random.shuffle(self.main_game.encounter_area.encounter_deck)
+                    else:
+                        self.main_game.encounter_area.encounter_deck = [self.encounter_card]
+                self.card_order[1] += 1
+                self.card_order[2] -= 1
+            elif not self.main_game.information:
+                if "守护" in self.rule_keyword and hasattr(self,
+                                                         "encounter_card") and self.encounter_card.card_type != "阴谋":
+                    self.main_game.information = [0, self.encounter_card.card_type + "卡牌放置进场后", self,
+                                                  self.encounter_card]
+                    if self.encounter_card.card_type == "目标":
+                        del self.encounter_card
+                        self.card_order[1] -= 4
+                    else:
+                        self.main_game.card_estimate(self).pop(self)
+                        if self.main_game.scenario_area.card_group[self.encounter_card]:
+                            self.main_game.scenario_area.card_group[self.encounter_card].append(self)
+                        else:
+                            self.main_game.scenario_area.card_group[self.encounter_card] = [self]
+                        if "被附属" not in self.encounter_card.active_condition or not \
+                                self.encounter_card.active_condition["被附属"]:
+                            self.encounter_card.active_condition["被附属"] = [self]
+                            self.encounter_card.update_mask()
+                        else:
+                            self.encounter_card.active_condition["被附属"].append(self)
+                        self.active_condition["附属到"] = [self.encounter_card]
+                        if "类型+" in self.active_condition:
+                            self.active_condition["类型+"].append("附属")
+                        else:
+                            self.active_condition["类型+"] = ["附属"]
+                        self.update_mask()
+                self.card_order[1] += 1
+        elif self.card_order[0] == "进场后" and self.card_order[1] == 4:
+            if self.card_order[2]:
+                self.card_order[2] = 0
+            elif not self.main_game.information and not self.main_game.response_conflict:
+                if hasattr(self, "encounter_card"):
+                    del self.encounter_card
+                if self.pause_card:
+                    self.pause_card.card_order = self.pause_card_order
+                    self.pause_card = None
+                    self.pause_card_order = None
+                self.main_game.information = self.copy_information
+                self.main_game.information.append(str(self))
+                self.main_game.information[0] = 0
+                self.copy_information = None
+                self.card_order = [None, 0, 0, None, 0, 0]
+        elif self.card_order[0] == "获取" and self.card_order[1] == 0:
             if self.card_order[2]:
                 self.card_order = [None, 0, 0, None, 0, 0]
             elif not self.main_game.information:

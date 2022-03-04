@@ -42,7 +42,7 @@ class Hero(Hero_Group):
                 not hasattr(self.main_game.threat_area, "enemy") or not self.main_game.threat_area.enemy) and \
                 self.main_game.button_option.buttons[0][0] != "单独攻击":
             self.main_game.button_option.buttons.insert(0, ("单独攻击", None))
-            self.main_game.button_option._set_current_button()
+            self.main_game.button_option.set_current_button()
 
     # 卡牌被选中时，侦听按钮树的选项选择
     def listening_button(self):

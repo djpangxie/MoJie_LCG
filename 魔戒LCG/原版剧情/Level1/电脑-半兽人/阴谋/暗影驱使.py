@@ -15,7 +15,7 @@ class Enemy(Enemy_Group):
         self.card_type = "阴谋"  # 卡牌类型，表明本卡牌是敌军、地区、阴谋还是目标
 
         # 规则文字，本卡牌在场时的特殊能力
-        self.rule_text = "展示后：当前在场景区中的每个敌军和地区获得+1威胁力直到本阶段结束。如果场景区中没有卡牌，暗影驱使获得”涌现“。"
+        self.rule_text = "展示后：当前在场景区中的每个敌军和地区获得+1威胁力直到本阶段结束。如果场景区中没有卡牌，暗影驱使获得“涌现”。"
 
         # 卡牌有暗影效果的话，代表其暗影效果的文字说明
         self.shadow_text = "暗影：从防御角色上选择并弃除一张附属牌。(如果本次攻击无人防御，则以弃除你控制的所有附属牌代替。)"
@@ -92,7 +92,8 @@ class Enemy(Enemy_Group):
             if self.card_order[2]:
                 self.card_order[1] += 1
             elif not self.main_game.information:
-                if "关键词+" in self.active_condition and "涌现" in self.active_condition["关键词+"] and self.main_game.encounter_area.encounter_deck:
+                if "关键词+" in self.active_condition and "涌现" in self.active_condition[
+                    "关键词+"] and self.main_game.encounter_area.encounter_deck:
                     self.main_game.information = [0, "遭遇卡牌将要展示", self, self.main_game.encounter_area.encounter_deck[0]]
                 self.card_order[1] += 1
         elif self.card_order[0] == "展示后" and self.card_order[1] == 3:
@@ -103,7 +104,8 @@ class Enemy(Enemy_Group):
                 self.card_order[1] += 1
                 self.card_order[2] -= 1
             elif not self.main_game.information:
-                if "关键词+" in self.active_condition and "涌现" in self.active_condition["关键词+"] and self.main_game.encounter_area.encounter_deck:
+                if "关键词+" in self.active_condition and "涌现" in self.active_condition[
+                    "关键词+"] and self.main_game.encounter_area.encounter_deck:
                     self.encounter_card = self.main_game.encounter_area.encounter_deck.pop(0)
                     self.main_game.card_exhibition(self.encounter_card, self.main_game.settings.card_exhibition_time)
                     self.main_game.scenario_area.card_group[self.encounter_card] = None
@@ -180,31 +182,8 @@ class Enemy(Enemy_Group):
                     if affiliated:
                         affiliated.card_order = ["弃除附属", 0, 0, False, 0, 0]
                 else:
-                    for card in self.main_game.hand_area.card_group:
-                        if "被附属" in card.active_condition:
-                            for affiliated in card.active_condition["被附属"]:
-                                if self.main_game.player_control(affiliated):
-                                    affiliated.card_order = ["弃除附属", 0, 0, False, 0, 0]
-                    for card in self.main_game.role_area.card_group:
-                        if "被附属" in card.active_condition:
-                            for affiliated in card.active_condition["被附属"]:
-                                if self.main_game.player_control(affiliated):
-                                    affiliated.card_order = ["弃除附属", 0, 0, False, 0, 0]
-                    for card in self.main_game.clash_area.card_group:
-                        if "被附属" in card.active_condition:
-                            for affiliated in card.active_condition["被附属"]:
-                                if self.main_game.player_control(affiliated):
-                                    affiliated.card_order = ["弃除附属", 0, 0, False, 0, 0]
-                    for card in self.main_game.scenario_area.card_group:
-                        if "被附属" in card.active_condition:
-                            for affiliated in card.active_condition["被附属"]:
-                                if self.main_game.player_control(affiliated):
-                                    affiliated.card_order = ["弃除附属", 0, 0, False, 0, 0]
-                    for card in self.main_game.task_area.region_card:
-                        if "被附属" in card.active_condition:
-                            for affiliated in card.active_condition["被附属"]:
-                                if self.main_game.player_control(affiliated):
-                                    affiliated.card_order = ["弃除附属", 0, 0, False, 0, 0]
+                    for affiliated in self.main_game.find_affiliated():
+                        affiliated.card_order = ["弃除附属", 0, 0, False, 0, 0]
                 self.main_game.information = [0, "阴谋卡牌暗影效果结算后", self]
                 self.card_order = [None, 0, 0, None, 0, 0]
         elif self.card_order[0] == "弃除暗影" and self.card_order[1] == 0:

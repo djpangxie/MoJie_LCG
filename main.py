@@ -422,9 +422,9 @@ class Enemy_Group:
             button_2.append(("威胁力:" + str(self.active_threat_force), None))
             button_2.append(("探索点:" + str(self.active_task_point), None))
         button = [("查看状态", button_1), ("查看属性", button_2)]
-        if not self.main_game.task_area.region_card and self.card_type == "地区" and self.main_game.threat_area.current_phase == 3 and self in self.main_game.scenario_area.card_group:
+        if not self.main_game.task_area.region_card and self.card_type == "地区" and self.main_game.threat_area.current_phase == 3 and not self.main_game.threat_area.action_window and self in self.main_game.scenario_area.card_group:
             button.insert(0, ("探索", None))
-        elif self.main_game.threat_area.current_phase == 4 and self.main_game.threat_area.current_step == 0 and self.card_type == "敌军" and self in self.main_game.scenario_area.card_group:
+        elif self.main_game.threat_area.current_phase == 4 and self.main_game.threat_area.current_step == 0 and self.card_type == "敌军" and not self.main_game.threat_area.action_window and self in self.main_game.scenario_area.card_group:
             button.insert(0, ("交锋", None))
         elif self.main_game.threat_area.current_phase == 5 and self.main_game.threat_area.current_step == 4 and not self.main_game.threat_area.action_window and self in self.main_game.clash_area.card_group and not hasattr(
                 self.main_game.threat_area,
@@ -1714,7 +1714,7 @@ class Button_Option:
             self.reset()
             self.importer = importer
             self.buttons = buttons
-            self._set_current_button()
+            self.set_current_button()
 
     # 用于处理键盘上的按键
     def keystroke_handling(self, event):
@@ -1740,7 +1740,7 @@ class Button_Option:
         elif event.key == pygame.K_ESCAPE or event.key == pygame.K_BACKSPACE:
             if self.option:
                 self.option = self.option // 10
-                self._set_current_button()
+                self.set_current_button()
             elif self.main_game.xuanxiang:
                 self.main_game.button_option.reset()
                 self.main_game.select_card = None
@@ -1749,14 +1749,14 @@ class Button_Option:
             if not self.option and key <= len(self.buttons):
                 if self.buttons[key - 1][1]:
                     self.option = key
-                    self._set_current_button()
+                    self.set_current_button()
                 else:
                     self.option = key * 100000
                     self.current_button = None
             elif self.option > 0 and self.option < 10 and key <= len(self.buttons[self.option - 1][1]):
                 if self.buttons[self.option - 1][1][key - 1][1]:
                     self.option = self.option * 10 + key
-                    self._set_current_button()
+                    self.set_current_button()
                 else:
                     self.option = self.option * 100000 + key * 10000
                     self.current_button = None
@@ -1764,7 +1764,7 @@ class Button_Option:
                     self.buttons[self.option // 10 - 1][1][self.option % 10 - 1][1]):
                 if self.buttons[self.option // 10 - 1][1][self.option % 10 - 1][1][key - 1][1]:
                     self.option = self.option * 10 + key
-                    self._set_current_button()
+                    self.set_current_button()
                 else:
                     self.option = self.option * 10000 + key * 1000
                     self.current_button = None
@@ -1773,7 +1773,7 @@ class Button_Option:
                 if self.buttons[self.option // 100 - 1][1][self.option // 10 % 10 - 1][1][self.option % 10 - 1][1][
                     key - 1][1]:
                     self.option = self.option * 10 + key
-                    self._set_current_button()
+                    self.set_current_button()
                 else:
                     self.option = self.option * 1000 + key * 100
                     self.current_button = None
@@ -1785,7 +1785,7 @@ class Button_Option:
                             self.option // 10 % 10 - 1][1][
                             self.option % 10 - 1][1][key - 1][1]:
                     self.option = self.option * 10 + key
-                    self._set_current_button()
+                    self.set_current_button()
                 else:
                     self.option = self.option * 100 + key * 10
                     self.current_button = None
@@ -1797,7 +1797,7 @@ class Button_Option:
                             self.option // 100 % 10 - 1][
                             1][self.option // 10 % 10 - 1][1][self.option % 10 - 1][1][key - 1][1]:
                     self.option = self.option * 10 + key
-                    self._set_current_button()
+                    self.set_current_button()
                 else:
                     self.option = self.option * 10 + key
                     self.current_button = None
@@ -1839,7 +1839,7 @@ class Button_Option:
         self.importer = None
 
     # 根据当前option设置其current_button
-    def _set_current_button(self):
+    def set_current_button(self):
         self.current_button = []
         if not self.option:
             for (num, button) in enumerate(self.buttons, 1):
@@ -1879,10 +1879,10 @@ class Program_Entrance:
         self.computer_card_image = None  # 电脑卡牌的背面图案
         self.resource_image = None  # 英雄资源池的图案
         self.mouse_pos = (0, 0)  # 用于保存当前鼠标位置
-        self.mouse_click = None  # 用于保存当前鼠标单击位置
-        self.mouse_rightclick = None  # 用于保存当前鼠标右击位置
+        self.mouse_click = None  # 用于保存当前鼠标左击时的位置
+        self.mouse_rightclick = None  # 用于保存当前鼠标右击时的位置
         self.next_step = 0  # 记录空格按键，并用这个按键来进行游戏的下一个步骤
-        self.return_phase = None  # 记录回车按键，这个按键按下后将跳回当前阶段
+        self.return_phase = None  # 记录回车按键，这个按键按下后将跳过当前阶段
         self.caps_lock = False  # 记录caps lock键的按下状态，决定打出卡牌时要不要手动扣费
         self.select_card = None  # 这个变量记录当前选中的卡牌
         self.response_pause = None  # 用于当卡牌响应时暂停事件行动窗口
@@ -2534,6 +2534,36 @@ class Program_Entrance:
         elif card in self.task_area.region_card:
             return self.task_area.region_card
         return None
+
+    # 返回一个场上所有的玩家控制的附属牌的列表
+    def find_affiliated(self):
+        affiliateds = []
+        for card in self.role_area.card_group:
+            if "被附属" in card.active_condition:
+                for affiliated in card.active_condition["被附属"]:
+                    if self.player_control(affiliated):
+                        affiliateds.append(affiliated)
+        for card in self.clash_area.card_group:
+            if "被附属" in card.active_condition:
+                for affiliated in card.active_condition["被附属"]:
+                    if self.player_control(affiliated):
+                        affiliateds.append(affiliated)
+        for card in self.scenario_area.card_group:
+            if "被附属" in card.active_condition:
+                for affiliated in card.active_condition["被附属"]:
+                    if self.player_control(affiliated):
+                        affiliateds.append(affiliated)
+        for card in self.task_area.region_card:
+            if "被附属" in card.active_condition:
+                for affiliated in card.active_condition["被附属"]:
+                    if self.player_control(affiliated):
+                        affiliateds.append(affiliated)
+        if self.playerdeck_area.player_affiliated:
+            for affiliated in self.playerdeck_area.player_affiliated:
+                if (affiliated.card_type == "附属" or "类型+" in affiliated.active_condition and "附属" in
+                    affiliated.active_condition["类型+"]) and self.player_control(affiliated):
+                    affiliateds.append(affiliated)
+        return affiliateds
 
     # 游戏胜利通关的函数
     def game_victory(self):

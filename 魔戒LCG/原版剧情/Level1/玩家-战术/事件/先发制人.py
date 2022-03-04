@@ -68,9 +68,6 @@ class Player(Player_Group):
                     for card in self.main_game.clash_area.card_group:
                         if card.card_type == "敌军":
                             enemys.append(card)
-                    for card in self.main_game.scenario_area.card_group:
-                        if card.card_type == "敌军":
-                            enemys.append(card)
                     if enemys:
                         self.select_enemy = self.main_game.card_select(enemys)
                         self.main_game.information = [0, self.select_card.card_type + "卡牌将要宣告攻击", self.select_card,

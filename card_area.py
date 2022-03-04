@@ -686,10 +686,11 @@ class Threat_Area:
                 self.order[2] -= 1
             elif not self.main_game.information:
                 can_activate = False
-                for card in self.main_game.scenario_area.card_group:
-                    if card.card_type == "地区" and not self.main_game.task_area.region_card:
-                        can_activate = True
-                        break
+                if not self.main_game.task_area.region_card:
+                    for card in self.main_game.scenario_area.card_group:
+                        if card.card_type == "地区":
+                            can_activate = True
+                            break
                 if self.main_game.next_step or not can_activate:
                     self.main_game.next_step = 0
                     self.order[1] += 1
