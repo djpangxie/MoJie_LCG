@@ -8,7 +8,7 @@ class Player(Player_Group):
         self.card_file = "刚铎摄政王.jpg"  # 卡牌的图像文件名
         self.card_image = pygame.image.load(os.path.join(self.card_dir, self.card_file)).convert()  # 卡牌的原始图像
         self.card_name = "刚铎摄政王"  # 卡牌的名称
-        self.unique_symbol = False  # True表示卡牌为独有牌，只要此独有牌在场(弃牌堆不算)，所有玩家都不能够打出或放置第二张此卡牌
+        self.unique_symbol = True  # True表示卡牌为独有牌，只要此独有牌在场(弃牌堆不算)，所有玩家都不能够打出或放置第二张此卡牌
         self.card_cost = 2  # 卡牌的费用，玩家必须从对应的资源池中支付所示数量的资源才能打出该卡牌
         self.faction_symbol = "领导"  # 影响力派系符号，表示本卡牌隶属于哪个派系
         self.card_attribute = ("刚铎", "头衔")  # 卡牌的属性文字标志，作为其他卡牌效果的目标判断

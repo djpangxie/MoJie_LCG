@@ -26,3 +26,5 @@
 ![26](ruledescription/26.jpg)
 ![27](ruledescription/27.jpg)
 ![28](ruledescription/28.jpg)
+![29](ruledescription/29.jpg)
+![30](ruledescription/30.jpg)

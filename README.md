@@ -11,6 +11,7 @@
 左下角是玩家弃牌堆，中间是玩家的手牌区，右下角是玩家牌组。详细的操作说明会在之后给出。
 
 GitHub镜像地址：<https://github.com/djpangxie/MoJie_LCG><br>
+GitLab镜像地址：<https://gitlab.com/djpangxie/MoJie_LCG><br>
 Gitcode镜像地址：<https://gitcode.net/dka1065832/MoJie_LCG>
 
 ## 软件架构
